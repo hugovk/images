@@ -7,13 +7,20 @@ import os
 import gpo_member_photos
 
 
-def file_exists(filename):
-    if not os.path.exists(filename):
+def files_exist(bioguide):
+    jpg_filename = os.path.join("congress", "original", bioguide + ".jpg")
+    jpg_found = os.path.exists(jpg_filename)
+
+    yaml_filename = os.path.join("congress", "metadata", bioguide + ".yaml")
+    yaml_found = os.path.exists(yaml_filename)
+
+    if not jpg_found or not yaml_found:
         print "---"
-        print "Not found:", filename
         print l['name']
-        return False
-    return True
+        if not jpg_found:
+            print "Not found:", jpg_filename
+        if not yaml_found:
+            print "Not found:", yaml_filename
 
 
 if __name__ == "__main__":
@@ -24,10 +31,6 @@ if __name__ == "__main__":
         "congress-legislators/legislators-current.yaml")
     for l in legislators:
         bioguide = l['id']['bioguide']
-        filename = os.path.join("congress", "original", bioguide + ".jpg")
-        if file_exists(filename):
-            # Only check for yaml if jpg exists
-            filename = os.path.join("congress", "metadata", bioguide + ".yaml")
-            file_exists(filename)
+        files_exist(bioguide)
 
 # End of file
