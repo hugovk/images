@@ -6,6 +6,7 @@ Run from root `images` dir:
 `python test/test_gpo_member_photos.py`
 """
 from __future__ import print_function, unicode_literals
+import os.path
 import sys
 try:
     import unittest2 as unittest
@@ -215,6 +216,22 @@ class TestSequenceFunctions(unittest.TestCase):
         text = None
         output = gpo_member_photos.resolve(self.yaml_data, text)
         self.assertEqual(output, None)
+
+    def test_download_legislator_data(self):
+        """ Test clonable """
+        gpo_member_photos.download_legislator_data()
+        self.assertTrue(os.path.exists("congress-legislators"))
+
+    def test_save_metadata(self):
+        """ Test file is saved """
+        bioguide_id = "A000000"
+        gpo_member_photos.save_metadata(bioguide_id)
+        self.assertTrue(os.path.exists("congress/metadata/A000000.yaml"))
+
+    def test_resize_photos(self):
+        """ Test callable """
+        gpo_member_photos.resize_photos()
+
 
 if __name__ == '__main__':
     unittest.main()
